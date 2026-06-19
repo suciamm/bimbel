@@ -9,6 +9,15 @@ type CreateEvaluasiRequest struct {
 	TanggalEvaluasi   string `json:"tanggal_evaluasi" binding:"required"` // YYYY-MM-DD
 }
 
+type UpdateEvaluasiRequest struct {
+	IDMurid           uint   `json:"id_murid" binding:"required"`
+	IDPembimbing      uint   `json:"id_pembimbing" binding:"required"`
+	EvaluasiKe        uint  `json:"evaluasi_ke" binding:"required"`
+	Nilai             string `json:"nilai" binding:"required"`
+	CatatanPembimbing string `json:"catatan_pembimbing"`
+	TanggalEvaluasi   string `json:"tanggal_evaluasi" binding:"required"` // YYYY-MM-DD
+}
+
 type EvaluasiPerMuridResponse struct {
     IDMurid            uint    `json:"id_murid" gorm:"column:id_murid"`
     KodeMurid          string  `json:"kode_murid" gorm:"column:kode_murid"`

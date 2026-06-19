@@ -4,10 +4,6 @@ import (
 	"time"
 )
 
-// Ubah variabel ini untuk mengganti hari input evaluasi (default: Minggu)
-var AllowedEvaluasiWeekday = time.Friday
-var AllowedEvaluasiWeekdayLabel = "Jumat"
-
 // 1. Struct User (Tabel users)
 type User struct {
 	IDUser         uint   `gorm:"primaryKey;autoIncrement"`

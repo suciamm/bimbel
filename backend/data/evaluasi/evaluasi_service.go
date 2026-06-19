@@ -35,10 +35,6 @@ func CreateEvaluasiService(req CreateEvaluasiRequest) error {
 		return errors.New("format tanggal_evaluasi harus YYYY-MM-DD")
 	}
 
-	if tanggalEvaluasi.Weekday() != config.AllowedEvaluasiWeekday {
-		return errors.New("evaluasi hanya boleh diinput pada hari " + config.AllowedEvaluasiWeekdayLabel)
-	}
-
 	var murid config.Murid
 	if err := config.DB.First(&murid, req.IDMurid).Error; err != nil {
 		return errors.New("murid tidak ditemukan")
@@ -48,7 +44,7 @@ func CreateEvaluasiService(req CreateEvaluasiRequest) error {
 	if err := config.DB.Where("id_user = ? AND role = ?", req.IDPembimbing, "pembimbing").First(&pembimbing).Error; err != nil {
 		return errors.New("pembimbing tidak ditemukan")
 	}
-
+	
 	var relasiCount int64
 	if err := config.DB.Model(&config.Jadwal{}).Where("id_murid = ? AND id_pembimbing = ?", req.IDMurid, req.IDPembimbing).Count(&relasiCount).Error; err != nil {
 		return errors.New("gagal memeriksa relasi pembimbing dan murid")
@@ -85,6 +81,58 @@ func CreateEvaluasiService(req CreateEvaluasiRequest) error {
 
 	if err := CreateEvaluasiModel(newData, config.DB); err != nil {
 		return errors.New("gagal menyimpan evaluasi")
+	}
+
+	return nil
+}
+
+func UpdateEvaluasiService(req UpdateEvaluasiRequest) error {
+	if req.EvaluasiKe < 1 || req.EvaluasiKe > 3 {
+		return errors.New("evaluasi_ke hanya boleh 1, 2, atau 3")
+	}
+
+	nilai := strings.ToUpper(strings.TrimSpace(req.Nilai))
+	if !allowedNilai[nilai] {
+		return errors.New("nilai evaluasi tidak valid, gunakan A/B/C/D/E")
+	}
+
+	loc, err := time.LoadLocation("Asia/Jakarta")
+	if err != nil {
+		loc = time.FixedZone("WIB", 7*60*60)
+	}
+
+	tanggalEvaluasi, err := time.ParseInLocation("2006-01-02", strings.TrimSpace(req.TanggalEvaluasi), loc)
+	if err != nil {
+		return errors.New("format tanggal_evaluasi harus YYYY-MM-DD")
+	}
+
+	var murid config.Murid
+	if err := config.DB.First(&murid, req.IDMurid).Error; err != nil {
+		return errors.New("murid tidak ditemukan")
+	}
+
+	var pembimbing config.User
+	if err := config.DB.Where("id_user = ? AND role = ?", req.IDPembimbing, "pembimbing").First(&pembimbing).Error; err != nil {
+		return errors.New("pembimbing tidak ditemukan")
+	}
+
+	var evaluasi config.EvaluasiMurid
+	err = config.DB.Where("id_murid = ? AND id_pembimbing = ? AND evaluasi_ke = ?", req.IDMurid, req.IDPembimbing, req.EvaluasiKe).First(&evaluasi).Error
+	if err != nil {
+		return errors.New("evaluasi tidak ditemukan")
+	}
+
+	if req.EvaluasiKe > 1 {
+		var evaluasiSebelumnya config.EvaluasiMurid
+		err := config.DB.Where("id_murid = ? AND evaluasi_ke = ?", req.IDMurid, req.EvaluasiKe-1).First(&evaluasiSebelumnya).Error
+		if err != nil {
+			return errors.New("evaluasi tahap sebelumnya belum ada")
+		}
+	}
+
+	err = UpdateEvaluasiModel(req.IDMurid, req.IDPembimbing, req.EvaluasiKe, nilai, strings.TrimSpace(req.CatatanPembimbing), tanggalEvaluasi.Format("2006-01-02"), config.DB)
+	if err != nil {
+		return errors.New("gagal mengupdate evaluasi")
 	}
 
 	return nil

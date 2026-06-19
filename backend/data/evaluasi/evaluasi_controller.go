@@ -158,3 +158,46 @@ func GetEvaluasiByOrtuController(c *gin.Context) {
 		"total":   len(data),
 	})
 }
+
+func UpdateEvaluasiController(c *gin.Context) {
+	var req UpdateEvaluasiRequest
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		var ve validator.ValidationErrors
+		if errors.As(err, &ve) {
+			out := make(map[string]string)
+			for _, fe := range ve {
+				out[fe.Field()] = getErrorMessage(fe)
+			}
+			c.JSON(http.StatusBadRequest, gin.H{"success": false, "errors": out, "message": "Validasi gagal"})
+			return
+		}
+		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Format JSON tidak valid"})
+		return
+	}
+
+	if err := UpdateEvaluasiService(req); err != nil {
+		status := http.StatusInternalServerError
+		if strings.Contains(err.Error(), "tidak valid") ||
+			strings.Contains(err.Error(), "wajib") ||
+			strings.Contains(err.Error(), "belum") ||
+			strings.Contains(err.Error(), "tidak ditemukan") ||
+			strings.Contains(err.Error(), "bukan") ||
+			strings.Contains(err.Error(), "hanya boleh") ||
+			strings.Contains(err.Error(), "sudah") ||
+			strings.Contains(err.Error(), "gagal") {
+			status = http.StatusBadRequest
+		}
+
+		c.JSON(status, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "Evaluasi berhasil diupdate",
+	})
+}

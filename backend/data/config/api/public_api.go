@@ -34,6 +34,7 @@ func ApiAllRoleWithToken(r *gin.Engine) {
 
 	// Menu evaluasi pembimbing
 	r.POST("/api/evaluasi/tambah", evaluasi.CreateEvaluasiController)
+	r.PUT("/api/evaluasi/update", evaluasi.UpdateEvaluasiController)
 	r.GET("/api/evaluasi/viewByPembimbing/:id_user", evaluasi.GetEvaluasiByPembimbingController)
 	r.GET("/api/evaluasi/viewByOrtu/:id_user", evaluasi.GetEvaluasiByOrtuController)
 

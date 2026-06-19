@@ -88,6 +88,11 @@ export async function createEvaluasiApi(payload) {
   return data
 }
 
+export async function updateEvaluasiApi(payload) {
+  const { data } = await http.put('/api/evaluasi/update', payload)
+  return data
+}
+
 export async function getEvaluasiByPembimbingApi(idUser) {
   const { data } = await http.get(`/api/evaluasi/viewByPembimbing/${idUser}`)
   return data

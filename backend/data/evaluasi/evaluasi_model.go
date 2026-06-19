@@ -84,3 +84,17 @@ func GetEvaluasiByOrtuModel(idOrtu int, db *gorm.DB) ([]EvaluasiPerMuridResponse
 
 	return result, err
 }
+
+func UpdateEvaluasiModel(idMurid, idPembimbing, evaluasiKe uint, nilai, catatan, tanggal string, db *gorm.DB) error {
+	if db == nil {
+		db = config.DB
+	}
+
+	return db.Model(&config.EvaluasiMurid{}).
+		Where("id_murid = ? AND id_pembimbing = ? AND evaluasi_ke = ?", idMurid, idPembimbing, evaluasiKe).
+		Updates(map[string]interface{}{
+			"nilai":              nilai,
+			"catatan_pembimbing": catatan,
+			"tanggal_evaluasi":   tanggal,
+		}).Error
+}
