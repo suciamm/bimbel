@@ -2,6 +2,7 @@ package evaluasi
 
 import (
 	"data/config"
+	"log"
 
 	"gorm.io/gorm"
 )
@@ -19,6 +20,7 @@ func GetEvaluasiByPembimbingModel(idPembimbing int, db *gorm.DB) ([]EvaluasiPerM
 		db = config.DB
 	}
 
+	log.Println("id pembimbing = ", idPembimbing)
 	err := db.
 		Table("jadwal j").
 		Select(`

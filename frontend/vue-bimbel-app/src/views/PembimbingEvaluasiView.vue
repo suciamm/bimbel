@@ -6,8 +6,8 @@ import { useAuthStore } from '../stores/auth'
 
 // Ubah nilai ini jika ingin ganti hari input evaluasi.
 // getDay(): Minggu=0, Senin=1, ..., Sabtu=6
-const ALLOWED_EVALUASI_DAY_INDEX = 0
-const ALLOWED_EVALUASI_DAY_LABEL = 'Minggu'
+const ALLOWED_EVALUASI_DAY_INDEX = 5
+const ALLOWED_EVALUASI_DAY_LABEL = 'Jumat'
 
 const authStore = useAuthStore()
 

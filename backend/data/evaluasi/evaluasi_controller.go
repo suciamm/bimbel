@@ -94,8 +94,25 @@ func GetEvaluasiByPembimbingController(c *gin.Context) {
 			fmt.Printf("[DEBUG] EvaluasiByPembimbing: %+v\n", d)
 		}
 	}
+	// Cek isi sebelum enrich
+	for _, d := range data {
+		if d.Evaluasi1Nilai != nil {
+			fmt.Printf("[BEFORE ENRICH] murid=%s nilai1=%s\n", d.NamaMurid, *d.Evaluasi1Nilai)
+		} else {
+			fmt.Printf("[BEFORE ENRICH] murid=%s nilai1=NIL\n", d.NamaMurid)
+		}
+	}
 
 	data = EnrichProgressInfo(data)
+
+	// Cek isi sesudah enrich
+	for _, d := range data {
+		if d.Evaluasi1Nilai != nil {
+			fmt.Printf("[AFTER ENRICH] murid=%s nilai1=%s\n", d.NamaMurid, *d.Evaluasi1Nilai)
+		} else {
+			fmt.Printf("[AFTER ENRICH] murid=%s nilai1=NIL\n", d.NamaMurid)
+		}
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,

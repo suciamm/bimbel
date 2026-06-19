@@ -35,9 +35,9 @@ func CreateEvaluasiService(req CreateEvaluasiRequest) error {
 		return errors.New("format tanggal_evaluasi harus YYYY-MM-DD")
 	}
 
-	// if tanggalEvaluasi.Weekday() != config.AllowedEvaluasiWeekday {
-	// 	return errors.New("evaluasi hanya boleh diinput pada hari " + config.AllowedEvaluasiWeekdayLabel)
-	// }
+	if tanggalEvaluasi.Weekday() != config.AllowedEvaluasiWeekday {
+		return errors.New("evaluasi hanya boleh diinput pada hari " + config.AllowedEvaluasiWeekdayLabel)
+	}
 
 	var murid config.Murid
 	if err := config.DB.First(&murid, req.IDMurid).Error; err != nil {

@@ -343,7 +343,7 @@ async function submitTransaksi() {
   successMessage.value = ''
 
   try {
-    if (form.metode_bayar === 'midtrans') {
+    if (form.metode_bayar === 'transfer') {
       await startMidtransPayment()
       return
     }
@@ -449,7 +449,7 @@ onMounted(loadData)
 
         <div>
           <button class="btn btn-primary" type="submit">
-            Simpan Transaksi
+            {{ form.metode_bayar === 'transfer' ? 'Bayar' : 'Simpan Transaksi' }}
           </button>
         </div>
       </form>

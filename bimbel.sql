@@ -219,6 +219,23 @@ CREATE TABLE `perkembangan_murid` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `evaluasi_murid`
+--
+
+CREATE TABLE `evaluasi_murid` (
+  `id_evaluasi` bigint(20) UNSIGNED NOT NULL,
+  `id_murid` bigint(20) UNSIGNED NOT NULL,
+  `id_pembimbing` bigint(20) UNSIGNED NOT NULL,
+  `evaluasi_ke` tinyint(3) UNSIGNED NOT NULL,
+  `nilai` enum('A','B','C','D','E') NOT NULL,
+  `catatan_pembimbing` text DEFAULT NULL,
+  `tanggal_evaluasi` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
