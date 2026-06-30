@@ -121,7 +121,7 @@ CREATE TABLE `murid` (
   `alamat` text DEFAULT NULL,
   `tgl_masuk` date NOT NULL,
   `tgl_keluar` date DEFAULT NULL,
-  `status_murid` enum('aktif','lulus','keluar') NOT NULL DEFAULT 'aktif',
+  `status_murid` enum('aktif','keluar') NOT NULL DEFAULT 'aktif',
   `id_user` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -130,7 +130,7 @@ CREATE TABLE `murid` (
 --
 
 INSERT INTO `murid` (`id_murid`, `kode_murid`, `nama_murid`, `tgl_lahir`, `alamat`, `tgl_masuk`, `tgl_keluar`, `status_murid`, `id_user`) VALUES
-(1, 'MRD001', 'adam smith', '2026-03-01', 'bjynthbgrvfcd', '2026-03-16', NULL, 'lulus', 2),
+(1, 'MRD001', 'adam smith', '2026-03-01', 'bjynthbgrvfcd', '2026-03-16', NULL, 'keluar', 2),
 (4, 'MRD002', 'gui', '2021-12-12', 'fwexs', '2026-01-31', NULL, 'aktif', 3),
 (5, 'MRD003', 'sandi', '2023-07-13', 'defcrv', '2026-03-30', NULL, 'aktif', 3),
 (6, 'MRD004', 'kris', '2023-10-09', 'cwervervrevre', '2026-03-16', NULL, 'aktif', 5);

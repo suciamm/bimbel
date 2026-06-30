@@ -32,7 +32,7 @@ type Murid struct {
 	Alamat      string     `gorm:"type:text"`
 	TglMasuk    time.Time  `gorm:"type:date;not null"`
 	TglKeluar   *time.Time `gorm:"type:date"`
-	StatusMurid string     `gorm:"type:enum('aktif','lulus','keluar');default:'aktif';not null"`
+	StatusMurid string     `gorm:"type:enum('aktif','keluar');default:'aktif';not null"`
 
 	// FK ke users (orang tua)
 	IDUser uint `gorm:"not null;column:id_user;index"`

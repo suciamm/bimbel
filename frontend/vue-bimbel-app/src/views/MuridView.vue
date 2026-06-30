@@ -367,7 +367,6 @@ onMounted(loadMurid)
           <label>Status Murid</label>
           <select v-model="editForm.status_murid">
             <option value="aktif">aktif</option>
-            <option value="lulus">lulus</option>
             <option value="keluar">keluar</option>
           </select>
         </div>
